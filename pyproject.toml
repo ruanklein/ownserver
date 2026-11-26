@@ -1,0 +1,17 @@
+[build-system]
+requires = ["uv_build>=0.9.14,<0.14.0"]
+build-backend = "uv_build"
+
+[project]
+name = "ownserver"
+version = "0.1.0"
+description = "A small static file server with optional live reload and ngrok tunnels."
+readme = "README.md"
+requires-python = ">=3.15"
+dependencies = ["ngrok>=1.8.0,<2.0.0"]
+
+[project.scripts]
+ownserver = "ownserver.app:main"
+
+[tool.uv]
+package = true
