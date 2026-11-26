@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from .cli import create_parser
-from .console import emit_json, log
+from .console import StatusLine, emit_json, log
 from .http_server import create_server
 from .ngrok_tunnel import NgrokTunnelError, open_tunnel, require_auth_token
 from .watcher import FileWatcher
@@ -105,6 +105,7 @@ def main(argv=None):
     watcher = FileWatcher(root) if args.watch else None
     server = None
     tunnel = None
+    status_line = None
     exit_code = 0
     try:
         server = create_server(
@@ -135,6 +136,11 @@ def main(argv=None):
                     tunnel.url if tunnel else None,
                 )
             )
+        else:
+            status_line = StatusLine(
+                _local_url(args.host, server.server_address[1]), stream=log_stream
+            )
+            status_line.start()
         server.serve_forever()
     except KeyboardInterrupt:
         log("stopped", "Server stopped.", stream=sys.stderr if args.json else sys.stdout)
@@ -157,6 +163,8 @@ def main(argv=None):
         )
         exit_code = 1
     finally:
+        if status_line is not None:
+            status_line.stop()
         if server is not None:
             try:
                 server.server_close()

@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from .console import emit_json, paint
+from .console import emit_json, write_line
 
 
 RELOAD_ENDPOINT = "/__ownserver_live_reload"
@@ -158,10 +158,8 @@ class StaticRequestHandler(http.server.SimpleHTTPRequestHandler):
             color = "yellow"
         else:
             color = "cyan"
-        print(
-            paint("{} - {}".format(self.address_string(), message), color, sys.stderr),
-            file=sys.stderr,
-            flush=True,
+        write_line(
+            "{} - {}".format(self.address_string(), message), color, sys.stderr
         )
 
 
