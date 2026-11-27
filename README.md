@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://pypi.org/project/ownserver/"><img src="https://img.shields.io/pypi/v/ownserver" alt="PyPI version"></a>
-  <a href="https://pypi.org/project/ownserver/"><img src="https://img.shields.io/pypi/pyversions/ownserver" alt="Supported Python versions"></a>
+  <a href="https://pypi.org/project/ownserver/"><img src="https://img.shields.io/badge/python-3.15%2B-3776AB?logo=python&amp;logoColor=white" alt="Python 3.15 or newer"></a>
 </p>
 
 Ownserver serves a directory over HTTP and opens an ngrok tunnel by default. It uses Python's standard library for the local server and the official ngrok Python SDK for the public tunnel.
