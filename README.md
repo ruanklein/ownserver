@@ -8,40 +8,57 @@ Ownserver serves a directory over HTTP and opens an ngrok tunnel by default. It 
 
 ## Requirements
 
-- [uv](https://docs.astral.sh/uv/) installed.
 - Python 3.15 or newer. `uv` can select or install a compatible Python version.
+- [uv](https://docs.astral.sh/uv/) installed when using the uv commands below.
 - An ngrok account and authtoken when using the default tunnel mode.
 
-Set the token in your Nushell session before starting Ownserver:
+Set the token in your shell before starting Ownserver.
 
-```nu
-$env.NGROK_AUTHTOKEN = "YOUR_NGROK_AUTHTOKEN"
+macOS/Linux (Bash):
+
+```bash
+export NGROK_AUTHTOKEN="YOUR_NGROK_AUTHTOKEN"
+```
+
+Windows (PowerShell):
+
+```powershell
+$env:NGROK_AUTHTOKEN = "YOUR_NGROK_AUTHTOKEN"
 ```
 
 The token is read from the environment and is never accepted as a command-line argument.
 
-## Install from PyPI
+## Install
 
-Install Ownserver into the active Python environment with pip:
+The command examples below work in Bash on macOS/Linux and in PowerShell on Windows. Only shell-specific environment variable setup is shown separately.
 
-```nu
+Install the published package from PyPI with pip into the active Python environment.
+
+```console
 pip install ownserver
 ownserver -p 8000
 ```
 
-Run it on demand in an isolated environment managed by uv:
+Install Ownserver from PyPI as a uv tool. This makes the `ownserver` command available without activating a project environment.
 
-```nu
+```console
+uv tool install ownserver
+ownserver -p 8000
+```
+
+To run it once without installing the tool persistently, use `uv tool run`:
+
+```console
 uv tool run ownserver -p 8000
 ```
 
-Both commands start ngrok by default and require `NGROK_AUTHTOKEN`. Add `--no-ngrok` to serve locally without a token.
+Ownserver starts ngrok by default and requires `NGROK_AUTHTOKEN`. Add `--no-ngrok` to serve locally without a token.
 
 ## Run from the project
 
 Run these commands from the project directory. `uv run` synchronizes the project environment before starting the command.
 
-```nu
+```console
 uv run ownserver -p 8000
 uv run ownserver -p 8000 ./public home.html
 uv run ownserver -p 8000 --watch ./public
@@ -49,13 +66,13 @@ uv run ownserver -p 8000 --watch ./public
 
 By default, Ownserver starts both the local HTTP server and an ngrok tunnel. It prints the local address and the public ngrok URL. The server listens on `127.0.0.1` unless `--host` is supplied. Use `--domain` with a domain reserved in your ngrok account:
 
-```nu
+```console
 uv run ownserver -p 8000 --domain my-site.ngrok.app ./public
 ```
 
 Use `--no-ngrok` to serve locally without requiring an ngrok token:
 
-```nu
+```console
 uv run ownserver -p 8000 --no-ngrok ./public
 ```
 
@@ -65,7 +82,7 @@ The optional positional arguments are the directory to serve (default: current d
 
 Use `--json` to write machine-readable status and error records to standard output:
 
-```nu
+```console
 uv run ownserver -p 8000 --json
 ```
 
@@ -83,35 +100,29 @@ Example HTTP error record:
 {"server":"ready","error":"HTTP 404 response","status":404,"method":"GET","path":"/missing"}
 ```
 
-## Install the command for your user
+## Install from a source checkout
 
 From the project directory, install the command into uv's user tool environment:
 
-```nu
+```console
 uv tool install .
 ```
 
 To locate the executable directory:
 
-```nu
+```console
 uv tool dir --bin
 ```
 
-If `ownserver` is not found, add that directory to Nushell's `PATH`. To apply the change for the current session, run:
+If `ownserver` is not found, add the directory printed by `uv tool dir --bin` to your user `PATH`, then restart your shell. Once it is available, run:
 
-```nu
-$env.PATH = ($env.PATH | prepend (uv tool dir --bin | str trim))
-```
-
-For a persistent change, add the same line to the Nushell environment file shown by `$nu.env-path`, then restart Nushell. Once the executable directory is on `PATH`, use the command directly:
-
-```nu
+```console
 ownserver -p 8000
 ownserver -p 8000 --no-ngrok
 ```
 
 Uninstall the user-level command with:
 
-```nu
+```console
 uv tool uninstall ownserver
 ```

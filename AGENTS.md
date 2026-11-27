@@ -11,13 +11,13 @@ Ownserver is a Python command-line tool that serves a local directory over HTTP.
 - Runtime dependency: the official `ngrok` Python SDK. The local HTTP server and file watcher use the Python standard library.
 - User documentation: `README.md` (English)
 
-Keep source code, comments, CLI help, and user-facing messages in English. Preserve Nushell syntax in shell examples in the README.
+Keep source code, comments, CLI help, and user-facing messages in English. In the README, use shared `console` examples for commands that work in both Bash and PowerShell; show shell-specific variants only for environment variable setup.
 
 ## Run and build
 
 Run project commands through `uv` from the repository root:
 
-```nu
+```console
 uv sync --locked
 uv run ownserver --help
 uv run ownserver -p 8000 --no-ngrok ./public
