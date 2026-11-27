@@ -15,9 +15,17 @@ Ownserver serves a directory over HTTP and opens an ngrok tunnel by default. It 
 
 - Python 3.15 or newer. `uv` can select or install a compatible Python version.
 - [uv](https://docs.astral.sh/uv/) installed when using the uv commands below.
-- An ngrok account and authtoken when using the default tunnel mode.
+- An ngrok account and authtoken when using the default tunnel mode. Ownserver reads it from `NGROK_AUTHTOKEN` or the default ngrok config file.
 
-Set the token in your shell before starting Ownserver.
+## ngrok authentication
+
+When `NGROK_AUTHTOKEN` contains a token, Ownserver uses it and skips the config file. Otherwise, it reads `agent.authtoken` from the default `ngrok.yml` location:
+
+- Linux: `$XDG_CONFIG_HOME/ngrok/ngrok.yml`, or `~/.config/ngrok/ngrok.yml` when `XDG_CONFIG_HOME` is not set.
+- macOS: `~/Library/Application Support/ngrok/ngrok.yml`.
+- Windows: `%LocalAppData%\ngrok\ngrok.yml`.
+
+Set `NGROK_AUTHTOKEN` to override the config file token:
 
 macOS/Linux (Bash):
 
@@ -31,7 +39,7 @@ Windows (PowerShell):
 $env:NGROK_AUTHTOKEN = "YOUR_NGROK_AUTHTOKEN"
 ```
 
-The token is read from the environment and is never accepted as a command-line argument.
+The token is never accepted as a command-line argument. If neither source contains a token, Ownserver reports how to configure one. Use `--no-ngrok` to run the local server without ngrok authentication.
 
 ## Install
 
@@ -57,7 +65,7 @@ To run it once without installing the tool persistently, use `uv tool run`:
 uv tool run ownserver -p 8000
 ```
 
-Ownserver starts ngrok by default and requires `NGROK_AUTHTOKEN`. Add `--no-ngrok` to serve locally without a token.
+Ownserver starts ngrok by default and reads its authtoken from the environment or the default config file. Add `--no-ngrok` to serve locally without a token.
 
 ## Run from the project
 

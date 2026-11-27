@@ -10,7 +10,7 @@ readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 requires-python = ">=3.15"
-dependencies = ["ngrok>=1.8.0,<2.0.0"]
+dependencies = ["ngrok>=1.8.0,<2.0.0", "PyYAML>=6.0.4,<7.0"]
 
 [project.scripts]
 ownserver = "ownserver.app:main"

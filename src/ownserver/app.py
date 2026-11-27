@@ -6,7 +6,7 @@ from pathlib import Path
 from .cli import create_parser
 from .console import StatusLine, emit_json, log
 from .http_server import create_server
-from .ngrok_tunnel import NgrokTunnelError, open_tunnel, require_auth_token
+from .ngrok_tunnel import NgrokTunnelError, open_tunnel, resolve_auth_token
 from .watcher import FileWatcher
 
 
@@ -95,9 +95,10 @@ def main(argv=None):
     root, index_path = resolve_paths(args.directory, args.default_index, parser)
     parser.json_context["directory"] = str(root)
 
+    auth_token = None
     if not args.no_ngrok:
         try:
-            require_auth_token()
+            auth_token = resolve_auth_token()
         except NgrokTunnelError as error:
             _report_error(args, str(error), root, args.port)
             return 1
@@ -115,7 +116,9 @@ def main(argv=None):
             watcher.start()
 
         if not args.no_ngrok:
-            tunnel = open_tunnel(args.port, args.domain, args.host)
+            tunnel = open_tunnel(
+                args.port, args.domain, args.host, auth_token=auth_token
+            )
 
         log_stream = sys.stderr if args.json else sys.stdout
         log(
