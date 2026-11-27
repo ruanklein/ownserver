@@ -7,6 +7,8 @@ name = "ownserver"
 version = "0.1.0"
 description = "A small static file server with optional live reload and ngrok tunnels."
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.15"
 dependencies = ["ngrok>=1.8.0,<2.0.0"]
 

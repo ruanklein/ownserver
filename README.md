@@ -20,6 +20,23 @@ $env.NGROK_AUTHTOKEN = "YOUR_NGROK_AUTHTOKEN"
 
 The token is read from the environment and is never accepted as a command-line argument.
 
+## Install from PyPI
+
+Install Ownserver into the active Python environment with pip:
+
+```nu
+pip install ownserver
+ownserver -p 8000
+```
+
+Run it on demand in an isolated environment managed by uv:
+
+```nu
+uv tool run ownserver -p 8000
+```
+
+Both commands start ngrok by default and require `NGROK_AUTHTOKEN`. Add `--no-ngrok` to serve locally without a token.
+
 ## Run from the project
 
 Run these commands from the project directory. `uv run` synchronizes the project environment before starting the command.
